@@ -74,7 +74,7 @@ def article_validate(all_fields=True):
     error = []
 
     try:
-        article_info = json.loads(flask.request.data.decode('cp1251'))
+        article_info = json.loads(flask.request.data.decode('utf8'))
     except:
         error.append("Unknown encoding")
         return None, error
