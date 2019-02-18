@@ -64,7 +64,7 @@ def resp(code, data):
     return flask.Response(
         status=code,
         mimetype="application/json",
-        response=json.dumps(data)
+        response=json.dumps(data, ensure_ascii=False)
     )
 
 
@@ -73,7 +73,11 @@ def article_validate(all_fields=True):
     """Json check for correctness"""
     error = []
 
-    article_info = flask.request.get_json()
+    try:
+        article_info = json.loads(flask.request.data.decode('cp1251'))
+    except:
+        error.append("Unknown encoding")
+        return None, error
 
     if article_info is None or not article_info:
         error.append("No JSON sent")
